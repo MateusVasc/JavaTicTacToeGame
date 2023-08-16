@@ -79,10 +79,19 @@ public class TicTacToe implements ActionListener {
 
     public void firstToPlay() {
         player1Turn = random.nextInt(2) == 0;
+
+        for (int i = 0; i < 9; i++) {
+            buttons[i].setEnabled(false);
+        }
+
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        for (int i = 0; i < 9; i++) {
+            buttons[i].setEnabled(true);
         }
 
         if (player1Turn) {
