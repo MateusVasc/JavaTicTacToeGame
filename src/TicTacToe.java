@@ -57,7 +57,18 @@ public class TicTacToe implements ActionListener {
     }
 
     public void firstToPlay() {
-        
+        player1Turn = random.nextInt(2) == 0;
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (player1Turn) {
+            fieldLabel.setText("X turn");
+        } else {
+            fieldLabel.setText("O turn");
+        }
     }
 
     public void checkWinner() {
