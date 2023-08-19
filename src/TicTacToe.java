@@ -9,22 +9,25 @@ import java.util.Random;
 
 public class TicTacToe implements ActionListener {
     Random random = new Random(); // creating  a Random instance
-    JFrame frame = new JFrame(); // creating a JFrame instance
+    JFrame gameFrame = new JFrame(); // creating a JFrame instance
     JPanel titlePanel = new JPanel(); // creating a JPanel instance
     JPanel buttonPanel = new JPanel(); // creating a JPanel instance
     JLabel fieldLabel = new JLabel(); // creating a JLabel instance
     JButton[] buttons = new JButton[9]; // creating a list of 9 buttons
+    JFrame newGameFrame; // creating a new JFrame instance
+    JButton buttonPlayAgain; // creating a JButton variable
+    JButton buttonClose; // creating a JButton variable
     boolean player1Turn; // boolean value responsible for knowing which player gets to play at the moment
 
     public TicTacToe() {
         // setting up frame configuration
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Tic-Tac-Toe Game");
-        frame.setSize(600,600);
-        frame.setLocation(388,57);
-        frame.getContentPane().setBackground(new Color(50,50,50));
-        frame.setLayout(new BorderLayout());
-        frame.setVisible(true);
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setTitle("Tic-Tac-Toe Game");
+        gameFrame.setSize(600,600);
+        gameFrame.setLocation(388,57);
+        gameFrame.getContentPane().setBackground(new Color(50,50,50));
+        gameFrame.setLayout(new BorderLayout());
+        gameFrame.setVisible(true);
 
         // setting up label configuration
         fieldLabel.setBackground(new Color(25,25,25));
@@ -51,18 +54,33 @@ public class TicTacToe implements ActionListener {
             buttons[i].addActionListener(this);
         }
 
+        // setting up new game stuff
+        buttonPlayAgain = new JButton(); // creating a new button
+        buttonPlayAgain.setFont(new Font("MV Boli",Font.BOLD,12));
+        buttonPlayAgain.setText("Play again?");
+        buttonPlayAgain.setFocusable(false);
+        buttonPlayAgain.addActionListener(this);
+        buttonClose = new JButton(); // creating a new button
+        buttonClose.setFont(new Font("MV Boli",Font.BOLD,12));
+        buttonClose.setText("Close");
+        buttonClose.setFocusable(false);
+        buttonClose.addActionListener(this);
+        // end of the new game stuff
+
         titlePanel.add(fieldLabel); // adding the label to the panel
 
-        frame.add(titlePanel,BorderLayout.NORTH); // adding the panel to the frame window with its position
+        gameFrame.add(titlePanel,BorderLayout.NORTH); // adding the panel to the frame window with its position
                                                   // on a borderlayot model
 
-        frame.add(buttonPanel); // adding  the button panel to the frame window
+        gameFrame.add(buttonPanel); // adding  the button panel to the frame window
 
         firstToPlay(); // calling the firstToPlay method
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buttonPlayAgain) playAgain();
+        if (e.getSource() == buttonClose) endGame();
         // method to verify the player's actions through the gameplay
         for (int i = 0; i < 9; i++) {
             if (e.getSource() == buttons[i]) {
@@ -222,6 +240,7 @@ public class TicTacToe implements ActionListener {
 
         // adding a new title in the panel to inform the winning player
         fieldLabel.setText("X won");
+        restart(player1Turn);
     }
 
     public void yWon(int buttonOne, int buttonTwo, int buttonThree) {
@@ -237,5 +256,67 @@ public class TicTacToe implements ActionListener {
 
         // adding a new title in the panel to inform the winning player
         fieldLabel.setText("O won");
+        restart(player1Turn);
+    }
+
+    public void restart(boolean player1Turn) {
+        newGameFrame = new JFrame(); // creating a new JFrame instance
+
+        // setting up frame configuration
+        newGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        newGameFrame.setTitle("Tic-Tac-Toe Game");
+        newGameFrame.setSize(400,145);
+        newGameFrame.setLocation(488,250);
+        newGameFrame.getContentPane().setBackground(Color.white);
+        newGameFrame.setLayout(new BorderLayout());
+        newGameFrame.setVisible(true);
+
+        JLabel newFieldLabel = new JLabel(); // creating a new JLabel instance
+
+        // setting up label configuration
+        newFieldLabel.setBackground(new Color(25,25,25));
+        newFieldLabel.setForeground(new Color(25,255,0));
+        newFieldLabel.setFont(new Font("Ink Free",Font.BOLD,50));
+        newFieldLabel.setHorizontalAlignment(JLabel.CENTER);
+        newFieldLabel.setText("Game Over");
+        newFieldLabel.setOpaque(true);
+
+        JPanel newTitlePanel = new JPanel(); // creating a new JPanel instance
+        // setting up panel configuration
+        newTitlePanel.setLayout(new BorderLayout());
+        newTitlePanel.setBounds(0,0,800,100);
+
+        JPanel newButtonPanel = new JPanel(); // creating a new JPanel instance
+        newButtonPanel.setLayout(new FlowLayout());
+        newButtonPanel.setBackground(Color.BLACK);
+
+        newButtonPanel.add(buttonPlayAgain);
+        newButtonPanel.add(createBlankSpace(40));
+        newButtonPanel.add(buttonClose);
+
+        newTitlePanel.add(newFieldLabel); // adding the label to the panel
+
+        newGameFrame.add(newTitlePanel,BorderLayout.NORTH); // adding the panel to the frame window
+                                                            // with its position on a borderlayot model
+
+        newGameFrame.add(newButtonPanel);
+    }
+
+    private static Component createBlankSpace(int width) {
+        JPanel space = new JPanel();
+        space.setPreferredSize(new Dimension(width, 0));
+        return space;
+    }
+
+    public void playAgain() {
+        // creating a new instance of the game
+        TicTacToe newGame = new TicTacToe();
+        // closing the frame
+        gameFrame.dispose();
+        newGameFrame.dispose();
+    }
+
+    public void endGame() {
+        System.exit(0);
     }
 }
