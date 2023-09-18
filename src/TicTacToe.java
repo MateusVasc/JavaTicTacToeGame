@@ -8,15 +8,23 @@ import java.util.Objects;
 import java.util.Random;
 
 public class TicTacToe implements ActionListener {
-    Random random = new Random(); // creating  a Random instance
+    Random random = new Random(); // creating a Random instance
+
     JFrame gameFrame = new JFrame(); // creating a JFrame instance
+    JFrame newGameFrame; // creating a new JFrame instance
+
     JPanel titlePanel = new JPanel(); // creating a JPanel instance
     JPanel buttonPanel = new JPanel(); // creating a JPanel instance
+    JPanel newTitlePanel = new JPanel(); // creating a new JPanel instance
+    JPanel newButtonPanel = new JPanel(); // creating a new JPanel instance
+
     JLabel fieldLabel = new JLabel(); // creating a JLabel instance
+    JLabel newFieldLabel = new JLabel(); // creating a new JLabel instance
+
     JButton[] buttons = new JButton[9]; // creating a list of 9 buttons
-    JFrame newGameFrame; // creating a new JFrame instance
-    JButton buttonPlayAgain; // creating a JButton variable
-    JButton buttonClose; // creating a JButton variable
+    JButton buttonPlayAgain = new JButton();; // creating a JButton variable
+    JButton buttonClose = new JButton();; // creating a JButton variable
+
     boolean player1Turn; // boolean value responsible for knowing which player gets to play at the moment
 
     public TicTacToe() {
@@ -54,27 +62,23 @@ public class TicTacToe implements ActionListener {
             buttons[i].addActionListener(this);
         }
 
+        titlePanel.add(fieldLabel); // adding the label to the panel
+        gameFrame.add(titlePanel,BorderLayout.NORTH); // adding the panel to the frame window with its position
+                                                      // on a borderlayot model
+        gameFrame.add(buttonPanel); // adding  the button panel to the frame window
+
+        firstToPlay(); // calling the firstToPlay method
+
         // setting up new game stuff
-        buttonPlayAgain = new JButton(); // creating a new button
         buttonPlayAgain.setFont(new Font("MV Boli",Font.BOLD,12));
         buttonPlayAgain.setText("Play again?");
         buttonPlayAgain.setFocusable(false);
         buttonPlayAgain.addActionListener(this);
-        buttonClose = new JButton(); // creating a new button
+
         buttonClose.setFont(new Font("MV Boli",Font.BOLD,12));
         buttonClose.setText("Close");
         buttonClose.setFocusable(false);
         buttonClose.addActionListener(this);
-        // end of the new game stuff
-
-        titlePanel.add(fieldLabel); // adding the label to the panel
-
-        gameFrame.add(titlePanel,BorderLayout.NORTH); // adding the panel to the frame window with its position
-                                                  // on a borderlayot model
-
-        gameFrame.add(buttonPanel); // adding  the button panel to the frame window
-
-        firstToPlay(); // calling the firstToPlay method
     }
 
     @Override
@@ -271,8 +275,6 @@ public class TicTacToe implements ActionListener {
         newGameFrame.setLayout(new BorderLayout());
         newGameFrame.setVisible(true);
 
-        JLabel newFieldLabel = new JLabel(); // creating a new JLabel instance
-
         // setting up label configuration
         newFieldLabel.setBackground(new Color(25,25,25));
         newFieldLabel.setForeground(new Color(25,255,0));
@@ -281,30 +283,25 @@ public class TicTacToe implements ActionListener {
         newFieldLabel.setText("Game Over");
         newFieldLabel.setOpaque(true);
 
-        JPanel newTitlePanel = new JPanel(); // creating a new JPanel instance
         // setting up panel configuration
         newTitlePanel.setLayout(new BorderLayout());
         newTitlePanel.setBounds(0,0,800,100);
 
-        JPanel newButtonPanel = new JPanel(); // creating a new JPanel instance
         newButtonPanel.setLayout(new FlowLayout());
-        newButtonPanel.setBackground(Color.BLACK);
-
+        newButtonPanel.setBackground(new Color(25,25,25));
         newButtonPanel.add(buttonPlayAgain);
-        newButtonPanel.add(createBlankSpace(40));
+        newButtonPanel.add(createBlankSpace());
         newButtonPanel.add(buttonClose);
 
         newTitlePanel.add(newFieldLabel); // adding the label to the panel
-
         newGameFrame.add(newTitlePanel,BorderLayout.NORTH); // adding the panel to the frame window
                                                             // with its position on a borderlayot model
-
         newGameFrame.add(newButtonPanel);
     }
 
-    private static Component createBlankSpace(int width) {
+    private static Component createBlankSpace() {
         JPanel space = new JPanel();
-        space.setPreferredSize(new Dimension(width, 0));
+        space.setPreferredSize(new Dimension(40, 0));
         return space;
     }
 
